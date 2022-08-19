@@ -10,12 +10,16 @@ var storedLat = localStorage.getItem("latitude")
 var storedLon = localStorage.getItem("longtitude")
 
 
-
 searchBtn.addEventListener("click", function() {
+
+
   var cityInput = searchInput.value;
   var cityUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${cityInput}&appid=${api.openWeaKey}`;
 
   console.log(cityInput)
+
+  
+  localStorage.setItem('search-history', JSON.stringify(cityInput));
 
   getGeoCodeApi();
 
@@ -38,18 +42,21 @@ searchBtn.addEventListener("click", function() {
         
         console.log(storedLon)
 
+        
+       
         var  OSM_URL  =  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';  
         var  OSM_ATTRIB  =  '&copy;  <a  href="http://openstreetmap.org/copyright">OpenStreetMap</a>  contributors';  
         var  osmLayer  =  L.tileLayer(OSM_URL,  {attribution:  OSM_ATTRIB});  
 
         var  WAQI_URL    =  "https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=_TOKEN_ID_";  
         var  WAQI_ATTR  =  'Air  Quality  Tiles  &copy;  <a  href="http://waqi.info">waqi.info</a>';  
-        var  waqiLayer  =  L.tileLayer(WAQI_URL,  {attribution:  WAQI_ATTR});  
+        var  waqiLayer  =  L.tileLayer(WAQI_URL,  {attribution:  WAQI_ATTR}); 
 
-        //cerritos lat 33.86 lon -118.05
         var  map  =  L.map('map').setView([storedLat,  storedLon],  9);  
         map.addLayer(osmLayer).addLayer(waqiLayer);  
-
+        
+        
+        
         airNowApi();
 
         function airNowApi() {
